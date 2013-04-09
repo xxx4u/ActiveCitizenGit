@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">    
+   
+	<item android:id="@+id/home"
+          android:icon="@drawable/mainmenu_home"
+          android:title="@string/mainmenu_home" />
+   
+          
+    <item android:id="@+id/gallery"
+          android:icon="@drawable/mainmenu_gallery"
+          android:title="@string/mainmenu_gallery" />
+    
+     <item android:id="@+id/exit"
+          android:icon="@drawable/mainmenu_exit"
+          android:title="@string/mainmenu_exit" />
+     
+     <!-- item android:id="@+id/addr"
+          android:icon="@drawable/mainmenu_addr"
+          android:title="@string/mainmenu_addr" />
+     
+     <item android:id="@+id/camera"
+          android:icon="@drawable/mainmenu_camera"
+          android:title="@string/mainmenu_camera" /-->
+    
+    
+</menu>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Active Citizen</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <link rel="stylesheet" href="lib/jquery.mobile-1.3.0.css" /> 
+  <!-- some simple styling for the Active Citizen view -->
+  <!-- required libraries -->
+  
+  <link rel="stylesheet" href="style.css" />  
+  <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places&language=el"></script>
+  <script type="text/javascript" src="lib/cordova-2.5.0.js"></script>
+  
+  <script type="text/javascript" src="lib/jquery-1.8.2.min.js"></script>
+  <script type="text/javascript" src="lib/jquery.mobile-1.3.0.js"></script>
+  <script type="text/javascript" src="lib/knockout-2.2.1.js"></script>
+  <script type="text/javascript" src="services/geolocation/geo.js"></script>
+  <script type="text/javascript" src="services/geolocation/jquery.geocomplete_changed.js"></script>
+  <script type="text/javascript" src="services/geolocation/autocompleteService.js"></script>
+  <script type="text/javascript" src="services/email/emailIntent.js"></script>
+  <script type="text/javascript" src="lib/diagnostic.js"></script>
+  <script type="text/javascript" charset="iso8859-7" src="lib/WaitingDialog.js"></script>
+  <script type="text/javascript" src="lib/webintent.js"></script>
+  <script type="text/javascript" src="lib/camera.js"></script>
+  <script type="text/javascript" src="lib/gallery.js"></script>
+  <script type="text/javascript" src="services/camera/capture.js"></script>
+  <script type="text/javascript" src="services/geolocation/staticMap.js"></script>
+    
+  <!-- the various view models -->
+  <script type="text/javascript" src="viewModel/viewModelReports.js" ></script>
+  <script type="text/javascript" src="viewModel/viewModelPerson.js" ></script>
+  <!-- the code that puts it all together -->
+  <script type="text/javascript" charset="iso8859-7" src="app.js" ></script>
+  <script type="text/javascript" charset="iso8859-7" src="services/appServices.js" ></script>   
+</head>
+<body>
+
+<!-- ### A page that renders the Categories List -->
+
+<div data-role="page" id="page0">
+<div data-role="header" data-theme="b">
+      <h1>ActiveCitizen</h1>
+</div>
+
+<div data-role="content" data-theme="c">
+<ul data-role="listview" data-divider-theme="d"> 
+  <li data-role="list-divider">Βλάβες</li>
+  <!-- ko foreach: categories.BLABES -->
+	<li><a data-bind="text: name, click: $root.chooseCategory"></a></li>
+  <!-- /ko -->
+  <li data-role="list-divider">Διάφορα</li>	
+  <!-- ko foreach: categories.DIAFORA -->
+	<li><a data-bind="text: name, click: $root.chooseCategory"></a></li>
+  <!-- /ko -->
+ </ul>
+</div>
+</div>
+
+
+
+<!-- ### A page that renders the Reports List -->
+
+<div data-role="page" id="page1">
+<div data-role="header" data-theme="b">
+      <h1>ActiveCitizen</h1>
+	  <a data-bind="click: $root.newItem" data-icon="plus" class="ui-btn-right">Προσθήκη</a>
+</div>
+
+<div data-role="content" data-theme="c">
+	  <ul id="report-list" data-role="listview" data-split-icon="delete" data-split-theme="b" data-bind="foreach: reports">
+		<li>
+			<a data-bind="text: address, click: $root.editItem"></a>
+			<a data-bind="click: $root.removeItem"></a>
+		</li>	
+	  </ul>
+</div>
+</div>
+
+
+<!-- ### A page that renders the Report Form -->
+<div data-role="page" data-add-back-btn="true" id="page2">
+<div data-role="header" data-theme="b">
+      <h1>ActiveCitizen</h1>
+      <a data-bind="click: $root.emailItem" data-icon="grid" class="ui-btn-right">e-mail</a>
+</div>
+<div data-role="content" data-theme="c">
+	<!-- label for="select-choice-nc" class="select">Κατηγορία Αιτήματος</label>
+	<select data-bind="value: currentCategory" name="select-choice-8" id="select-choice-nc">
+	<optgroup label="Βλάβες">
+		<option value="Κλάδεμα, κοπή δέντρου">Κλάδεμα, κοπή δέντρου</option>
+		<option value="Πινακίδες Σήμανσης και καθρέπτες">Πινακίδες Σήμανσης και καθρέπτες</option>
+		<option value="Βλάβες οδοστρώματος">Βλάβες οδοστρώματος</option>
+		<option value="Συντήρηση κοινόχρηστων χώρων">Συντήρηση κοινόχρηστων χώρων</option>
+		<option value="Βλάβη στο δημοτικό φωτισμό">Βλάβη στο δημοτικό φωτισμό</option>
+	</optgroup>
+	<optgroup label="Διάφορα">
+		<option value="Πολεοδομικά θέματα">Πολεοδομικά θέματα</option>
+		<option value="Λοιπά θέματα">Λοιπά θέματα</option>
+	</optgroup>
+	</select-->
+	
+	<label>Κατηγορία:</label>
+	<input data-bind="value: currentCategory" type="text" name="category" value=""  />
+	
+	<label>Διεύθυνση:</label>
+	<input data-bind="value: currentAddress" type="text" name="address" value=""  />
+	<a href="#page3">Διεύθυνση</a>
+	
+	<label for="textarea-a">Περιγραφή αιτήματος</label>
+	<textarea data-bind="value: currentDescription" name="textarea" id="textarea-a"></textarea>
+	
+	<a href="#page4">Φωτογραφίες</a>
+	<br>
+	<a href="#person">Προσωπικά Στοιχεία</a>
+	<a data-bind="visible: !editing(), click: add" data-role="button" data-theme="a">Προσθήκη</a>
+	<a data-bind="visible: editing, click: replaceItem" data-role="button" data-theme="a">Ενημέρωση</a>
+  
+    <!--div id="footer" data-role="footer" data-position="fixed" data-theme="e">		
+	<div data-role="navbar">
+		<ul>
+			<li><a href="#">Διαγραφή</a></li>
+			<li><a href="#">Αποθήκευση</a></li>
+			<li><a href="#">Ακύρωση</a></li>
+		</ul>
+	</div><!-- /navbar -->
+	<!--/div><!-- /footer -->
+</div>
+</div>
+
+
+<div data-role="page" data-add-back-btn="true" id="page3">
+<div data-role="header" data-theme="b">
+      <h1>Address</h1>
+      <a data-bind="visible:$root.currentAddress(), click: $root.downloadMap" data-icon="grid" class="ui-btn-right">downloadMap</a>
+</div>
+<div data-role="content" data-theme="c" style="padding:3px">
+	<div class="ui-grid-a">
+	<div class="ui-block-a" style="width:90%">
+		<input id="input" type="text" data-bind="value: currentAddress">
+		<!-- div id="logo"></div-->
+		<ul id="results"></ul>
+	</div>
+	<div class="ui-block-b" style="width:10%">
+		<img id="gps" src="images/gps.png" style="padding:5px" data-bind="click: $root.fireGPS"></div>
+	</div>
+	<div align="center" id="map_canvas"></div>
+</div>
+</div>
+
+
+<!-- ### A page that renders the Camera  -->
+
+<div data-role="page" data-add-back-btn="true" id="page4">
+<div data-role="header" data-theme="b">
+      <h1>Camera</h1>
+	  <a data-bind="event:{tap: $root.fireGallery}" data-icon="plus" class="ui-btn-right">Λήψη Φωτογραφίας</a>
+</div>
+
+<div data-role="content" data-theme="c">
+	  <div data-bind="foreach:currentImagePaths">
+	  	<img width="70" height="70" data-bind="event: {tap: $root.deleteImage}, attr:{src: $data}" />
+	  </div>  
+</div>
+</div>
+
+
+<!-- ### A page that renders the Person Form -->
+  <div data-role="page" data-add-back-btn="true" id="person">
+    <div data-role="header" data-theme="b">
+      <h1>Στοιχεία</h1>
+    </div>
+    <div data-role="content" data-theme="c">
+      <div data-bind="with: person.data">
+	    <label>Όνομα:</label>
+        <input data-bind="value: name, valueUpdate: 'afterkeydown'"></input>
+		<label>Επώνυμο:</label>
+		<input data-bind="value: surname, valueUpdate: 'afterkeydown'"></input>
+		<label>Διεύθυνση:</label>
+		<input data-bind="value: address, valueUpdate: 'afterkeydown'"></input>
+		<label>Τηλέφωνο:</label>
+		<input data-bind="value: phone, valueUpdate: 'afterkeydown'" type="tel"></input>
+      </div>
+	  <button data-theme="a" data-bind="click: person.save">Αποθήκευση</button>
+    </div>
+  </div>
+  
+  
+
+</body>
+</html>

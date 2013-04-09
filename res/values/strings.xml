@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Camera</string>
+    <string name="app_name">Camera</string>
+    <string name="lblCapturar">Λήψη</string>
+    <string name="lblCancelar">Ακύρωση</string>
+   
+     <string name="mainmenu_home">Αρχική</string>
+    <string name="mainmenu_gallery">Gallery</string>
+    <string name="mainmenu_exit">Έξοδος</string>
+    
+    <string name="mainmenu_addr">Διεύθυνση</string>
+    <string name="mainmenu_camera">Κάμερα</string>
+    
+    <!-- string name="app_name">Foreground Gallery Plugin</string-->
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">Foreground Gallery</string>
+   
+</resources>
